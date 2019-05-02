@@ -29,6 +29,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QLineEdit" name="searchLineEdit">
+     <property name="placeholderText">
+      <string>Enter address or label to search</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTableView" name="tableView">
      <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
@@ -70,6 +77,10 @@
         <iconset resource="../bitcoin.qrc">
          <normaloff>:/icons/add</normaloff>:/icons/add</iconset>
        </property>
+       <property name="icon">
+        <iconset resource="../bitcoin.qrc">
+         <normaloff>:/icons/add</normaloff>:/icons/add</iconset>
+       </property>
        <property name="autoDefault">
         <bool>false</bool>
        </property>
@@ -87,6 +98,10 @@
         <iconset resource="../bitcoin.qrc">
          <normaloff>:/icons/editcopy</normaloff>:/icons/editcopy</iconset>
        </property>
+       <property name="icon">
+        <iconset resource="../bitcoin.qrc">
+         <normaloff>:/icons/editcopy</normaloff>:/icons/editcopy</iconset>
+       </property>
        <property name="autoDefault">
         <bool>false</bool>
        </property>
@@ -99,6 +114,10 @@
        </property>
        <property name="text">
         <string>&amp;Delete</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../bitcoin.qrc">
+         <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
        </property>
        <property name="icon">
         <iconset resource="../bitcoin.qrc">
@@ -129,6 +148,10 @@
        </property>
        <property name="text">
         <string>&amp;Export</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../bitcoin.qrc">
+         <normaloff>:/icons/export</normaloff>:/icons/export</iconset>
        </property>
        <property name="icon">
         <iconset resource="../bitcoin.qrc">

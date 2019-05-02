@@ -1,4 +1,5 @@
 // Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -240,6 +241,8 @@ void SendCoinsDialog::on_sendButton_clicked()
         return;
     }
 
+    recipients[0].inputType = ALL_COINS;
+    recipients[0].fUseInstantSend = false;
     fNewRecipientAllowed = false;
     WalletModel::UnlockContext ctx(model->requestUnlock());
     if(!ctx.isValid())

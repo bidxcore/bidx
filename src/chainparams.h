@@ -32,9 +32,9 @@ struct CCheckpointData {
  * See also: CChainParams::TxData, GuessVerificationProgress.
  */
 struct ChainTxData {
-    int64_t nTime;    //!< UNIX timestamp of last known number of transactions
-    int64_t nTxCount; //!< total number of transactions between genesis and that timestamp
-    double dTxRate;   //!< estimated number of transactions per second after that timestamp
+    int64_t nTime;
+    int64_t nTxCount;
+    double dTxRate;
 };
 
 /**
@@ -60,6 +60,7 @@ public:
     const Consensus::Params& GetConsensus() const { return consensus; }
     const CMessageHeader::MessageStartChars& MessageStart() const { return pchMessageStart; }
     int GetDefaultPort() const { return nDefaultPort; }
+    int MaxReorganizationDepth() const { return nMaxReorganizationDepth; }
 
     const CBlock& GenesisBlock() const { return genesis; }
     /** Default value for -checkmempool and -checkblockindex argument */
@@ -81,6 +82,11 @@ public:
     const CCheckpointData& Checkpoints() const { return checkpointData; }
     const ChainTxData& TxData() const { return chainTxData; }
     void UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64_t nStartTime, int64_t nTimeout);
+    int PoolMaxTransactions() const { return nPoolMaxTransactions; }
+    int FulfilledRequestExpireTime() const { return nFulfilledRequestExpireTime; }
+    std::string SporkPubKey() const { return strSporkPubKey; }
+    int CollateralLevels() const { return nCollateralLevels.size(); }
+    const std::vector<CAmount> ValidCollateralAmounts() const { return nCollateralLevels; }
 protected:
     CChainParams() {}
 
@@ -100,6 +106,11 @@ protected:
     CCheckpointData checkpointData;
     ChainTxData chainTxData;
     bool m_fallback_fee_enabled;
+    int nPoolMaxTransactions;
+    int nFulfilledRequestExpireTime;
+    std::string strSporkPubKey;
+    int nMaxReorganizationDepth;
+    std::vector<CAmount> nCollateralLevels;
 };
 
 /**
