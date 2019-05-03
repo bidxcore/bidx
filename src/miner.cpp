@@ -596,6 +596,8 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWa
                 throw std::runtime_error("No coinbase script available (mining requires a wallet)");
 
             do {
+                if (!chainparams.MiningRequiresPeers())
+                    break;
                 bool fvNodesEmpty = connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0;
                 if (!fvNodesEmpty && !IsInitialBlockDownload() && masternodeSync.IsSynced())
                     break;
