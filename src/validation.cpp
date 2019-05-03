@@ -1847,10 +1847,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         return true;
     }
 
-    if (pindex->nHeight > Params().GetConsensus().nFirstPoSBlock && block.IsProofOfWork()) {
-        return state.DoS(100, error("ConnectBlock() : PoW period ended"),
-                         REJECT_INVALID, "PoW-ended");
-    }
+//  if (pindex->nHeight > Params().GetConsensus().nFirstPoSBlock && block.IsProofOfWork()) {
+//      return state.DoS(100, error("ConnectBlock() : PoW period ended"),
+//                       REJECT_INVALID, "PoW-ended");
+//  }
 
     nBlocksTotal++;
 
