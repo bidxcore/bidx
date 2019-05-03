@@ -1380,7 +1380,6 @@ void CWallet::TransactionRemovedFromMempool(const CTransactionRef &ptx) {
 }
 
 void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted) {
-    bool witnessEnabled = IsWitnessEnabled(pindex, Params().GetConsensus());
 
     LOCK2(cs_main, cs_wallet);
     // TODO: Temporarily ensure that mempool removals are notified before

@@ -1142,7 +1142,7 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
 
 CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
-    CAmount nSubsidy = 0 * COIN;
+    CAmount nSubsidy = 1000 * COIN;
 
     return nSubsidy;
 }
@@ -3369,10 +3369,10 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
 
     // Check proof of work
     const Consensus::Params& consensusParams = params.GetConsensus();
-    if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams)) {
+    if (block.nBits != GetNextWorkRequired(pindexPrev, consensusParams, false)) {
         LogPrintf("nbits %08x expected %08x\n",
                  block.nBits,
-                 GetNextWorkRequired(pindexPrev, &block, consensusParams));
+                 GetNextWorkRequired(pindexPrev, consensusParams, false));
         return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, "incorrect proof of work");
     }
 

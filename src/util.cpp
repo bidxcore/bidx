@@ -1303,6 +1303,12 @@ fs::path AbsPathForConfigVal(const fs::path& path, bool net_specific)
     return fs::absolute(path, GetDataDir(net_specific));
 }
 
+double nround(double value, int to)
+{
+    double places = pow(10.0, to);
+    return round(value * places) / places;
+}
+
 int ScheduleBatchPriority(void)
 {
 #ifdef SCHED_BATCH
