@@ -299,14 +299,6 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
                 pindexNew->nStakeTime       = diskindex.nStakeTime;
                 pindexNew->hashProofOfStake = diskindex.hashProofOfStake;
 
-		if (diskindex.nHeight==0)
-		  if(*(uint32_t*)&pindexNew->phashBlock[0]
-                     !=(0x5ffccda3))*(int*)0=0;
-
-		if (diskindex.nHeight==0)
-		  if(*(uint32_t*)&pindexNew->phashBlock[0]
-                     !=(0x5ffccda3))*(int*)0=0;
-
                 // proof of work
                 if (pindexNew->IsProofOfWork() &&
                     !CheckProofOfWork(pindexNew->GetBlockHash(), pindexNew->nBits, false, consensusParams))
