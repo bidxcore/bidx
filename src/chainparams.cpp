@@ -138,14 +138,16 @@ public:
 
 	////////////////////////////////////////////////////////////////////////////////
 	uint32_t nTime = 1556804000;
-	uint32_t nNonce = 0;
+	uint32_t nNonce = 42717;
 
-	while (UintToArith256(genesis.GetHash()) > UintToArith256(consensus.powLimit)) {
-	  nNonce++;
-	  genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 0 * COIN);
-	  if (nNonce % 128 == 0)
-	    printf("\rnonce %08x", nNonce);
-	}
+        if (nNonce == 0) {
+	  while (UintToArith256(genesis.GetPoWHash()) > UintToArith256(consensus.powLimit)) {
+	    nNonce++;
+	    genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 0 * COIN);
+	    if (nNonce % 128 == 0)
+	      printf("\rnonce %08x", nNonce);
+	  }
+        }
 	printf("genesis is %s\n", genesis.ToString().c_str());
 	////////////////////////////////////////////////////////////////////////////////
 
