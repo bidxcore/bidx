@@ -749,9 +749,11 @@ static fs::path pathCached;
 static fs::path pathCachedNetSpecific;
 static CCriticalSection csPathCached;
 
+static fs::path backupsDirCached;
+static CCriticalSection csBackupsDirCached;
+
 const fs::path &GetBlocksDir(bool fNetSpecific)
 {
-
     LOCK(csPathCached);
 
     fs::path &path = fNetSpecific ? g_blocks_path_cache_net_specific : g_blocks_path_cached;
@@ -780,7 +782,6 @@ const fs::path &GetBlocksDir(bool fNetSpecific)
 
 const fs::path &GetDataDir(bool fNetSpecific)
 {
-
     LOCK(csPathCached);
 
     fs::path &path = fNetSpecific ? pathCachedNetSpecific : pathCached;
@@ -808,6 +809,37 @@ const fs::path &GetDataDir(bool fNetSpecific)
     }
 
     return path;
+}
+
+const fs::path &GetBackupsDir(bool fNetSpecific)
+{
+    LOCK(csBackupsDirCached);
+
+    fs::path &path = backupsDirCached;
+
+    if (!path.empty())
+        return path;
+
+    if (gArgs.IsArgSet("-walletbackupsdir")) {
+        path = fs::system_complete(gArgs.GetArg("-walletbackupsdir", ""));
+        if (!fs::is_directory(path)) {
+            path = "";
+            return path;
+        }
+    } else {
+        path = GetDefaultDataDir();
+    }
+
+    if (fNetSpecific)
+        path /= BaseParams().DataDir();
+
+    if (fs::create_directories(path)) {
+        // This is the first run, create wallets subdirectory too
+        fs::create_directories(path / "backups");
+    }
+
+    return path;
+
 }
 
 void ClearDatadirCache()

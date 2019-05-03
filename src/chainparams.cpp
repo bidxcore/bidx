@@ -136,9 +136,24 @@ public:
         nPruneAfterHeight = 100000;
         nMaxReorganizationDepth = 100;
 
-        genesis = CreateGenesisBlock(0, 0, 0x1f00ffff, 1, 0 * COIN);
+	////////////////////////////////////////////////////////////////////////////////
+	uint32_t nTime = 1556804000;
+	uint32_t nNonce = 42717;
+
+        if (nNonce == 0) {
+	  while (UintToArith256(genesis.GetPoWHash()) > UintToArith256(consensus.powLimit)) {
+	    nNonce++;
+	    genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 0 * COIN);
+	    if (nNonce % 128 == 0)
+	      printf("\rnonce %08x", nNonce);
+	  }
+        }
+	printf("genesis is %s\n", genesis.ToString().c_str());
+	////////////////////////////////////////////////////////////////////////////////
+
+        genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S(""));
+        // assert(consensus.hashGenesisBlock == uint256S(""));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,70);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,132);
@@ -149,6 +164,7 @@ public:
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
+        fMiningRequiresPeers = false;
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;

@@ -79,6 +79,10 @@
 #include <zmq/zmqrpc.h>
 #endif
 
+#ifdef USE_SSE2
+#include <crypto/scrypt.h>
+#endif
+
 bool fFeeEstimatesInitialized = false;
 static const bool DEFAULT_PROXYRANDOMIZE = true;
 static const bool DEFAULT_REST_ENABLE = false;
@@ -346,6 +350,12 @@ void Shutdown()
         g_zmq_notification_interface = nullptr;
     }
 #endif
+
+    if (pdsNotificationInterface) {
+        UnregisterValidationInterface(pdsNotificationInterface);
+        delete pdsNotificationInterface;
+        pdsNotificationInterface = NULL;
+    }
 
 #ifndef WIN32
     try {
@@ -1470,6 +1480,11 @@ bool AppInitMain()
             return InitError(_("Unable to start HTTP server. See debug log for details."));
     }
 
+#if defined(USE_SSE2)
+    std::string sse2detect = scrypt_detect_sse2();
+    LogPrintf("%s\n", sse2detect);
+#endif
+
     // ********************************************************* Step 5: verify wallet database integrity
     if (!g_wallet_init_interface.Verify()) return false;
 
@@ -1581,6 +1596,9 @@ bool AppInitMain()
 #endif
     uint64_t nMaxOutboundLimit = 0; //unlimited unless -maxuploadtarget is set
     uint64_t nMaxOutboundTimeframe = MAX_UPLOAD_TIMEFRAME;
+
+    pdsNotificationInterface = new CDSNotificationInterface(connman);
+    RegisterValidationInterface(pdsNotificationInterface);
 
     if (gArgs.IsArgSet("-maxuploadtarget")) {
         nMaxOutboundLimit = gArgs.GetArg("-maxuploadtarget", DEFAULT_MAX_UPLOAD_TARGET)*1024*1024;
