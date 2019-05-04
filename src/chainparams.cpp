@@ -148,7 +148,6 @@ public:
 	      printf("\rnonce %08x", nNonce);
 	  }
         }
-	printf("genesis is %s\n", genesis.ToString().c_str());
 	////////////////////////////////////////////////////////////////////////////////
 
         genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 0 * COIN);
