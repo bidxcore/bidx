@@ -348,7 +348,7 @@ void CMasternode::UpdateLastPaid(const CBlockIndex *pindex, int nMaxBlocksToScan
     const CBlockIndex *BlockReading = pindex;
 
     CScript mnpayee = GetScriptForDestination(pubKeyCollateralAddress.GetID());
-    // LogPrint(BCLog::MASTERNODE, "CMasternode::UpdateLastPaidBlock -- searching for block with payment to %s\n", vin.prevout.ToString());
+    LogPrint(BCLog::MASTERNODE, "CMasternode::UpdateLastPaidBlock -- searching for block with payment to %s\n", vin.prevout.ToString());
 
     LOCK(cs_mapMasternodeBlocks);
 
@@ -360,7 +360,8 @@ void CMasternode::UpdateLastPaid(const CBlockIndex *pindex, int nMaxBlocksToScan
             if(!ReadBlockFromDisk(block, BlockReading, Params().GetConsensus())) // shouldn't really happen
                 continue;
 
-            const auto& coinbaseTransaction = (BlockReading->nHeight > Params().GetConsensus().nFirstPoSBlock ? block.vtx[1] : block.vtx[0]);
+            bool isProofOfStake = !block.IsProofOfWork();
+            const auto& coinbaseTransaction = block.vtx[isProofOfStake];
 
             CAmount nMasternodePayment = GetMasternodePayment(BlockReading->nHeight, BlockReading->nMint);
 
