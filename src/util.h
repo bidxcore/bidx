@@ -366,6 +366,8 @@ std::string CopyrightHolders(const std::string& strPrefix);
  */
 int ScheduleBatchPriority(void);
 
+double nround(double value, int to);
+
 namespace util {
 
 //! Simplification of std insertion

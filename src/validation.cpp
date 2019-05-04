@@ -1142,7 +1142,7 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
 
 CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
-    CAmount nSubsidy = 0 * COIN;
+    CAmount nSubsidy = 1000 * COIN;
 
     return nSubsidy;
 }
@@ -1847,10 +1847,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         return true;
     }
 
-    if (pindex->nHeight > Params().GetConsensus().nFirstPoSBlock && block.IsProofOfWork()) {
-        return state.DoS(100, error("ConnectBlock() : PoW period ended"),
-                         REJECT_INVALID, "PoW-ended");
-    }
+//  if (pindex->nHeight > Params().GetConsensus().nFirstPoSBlock && block.IsProofOfWork()) {
+//      return state.DoS(100, error("ConnectBlock() : PoW period ended"),
+//                       REJECT_INVALID, "PoW-ended");
+//  }
 
     nBlocksTotal++;
 
@@ -2092,10 +2092,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         return state.DoS(0, error("ConnectBlock(Bitcoin): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 
-    const auto& coinbaseTransaction = (pindex->nHeight > Params().GetConsensus().nFirstPoSBlock ? block.vtx[1] : block.vtx[0]);
+    bool isProofOfStake = !block.IsProofOfWork();
+    const auto& coinbaseTransaction = block.vtx[isProofOfStake];
 
     if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward, pindex->nMint)) {
-        //        mapRejectedBlocks.insert(std::make_pair(block.GetHash(), GetTime()));
         return state.DoS(0, error("ConnectBlock(Bitcoin): couldn't find masternode or superblock payments"),
                          REJECT_INVALID, "bad-cb-payee");
     }
@@ -3366,15 +3366,7 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
 {
     assert(pindexPrev != nullptr);
     const int nHeight = pindexPrev->nHeight + 1;
-
-    // Check proof of work
     const Consensus::Params& consensusParams = params.GetConsensus();
-    if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams)) {
-        LogPrintf("nbits %08x expected %08x\n",
-                 block.nBits,
-                 GetNextWorkRequired(pindexPrev, &block, consensusParams));
-        return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, "incorrect proof of work");
-    }
 
     // Check against checkpoints
     if (fCheckpointsEnabled) {
@@ -3409,39 +3401,6 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
     return true;
 }
 
-//bool CheckBlockRatio(const CBlock& block, const CBlockIndex* pindexPrev) {
-//
-//      if (sporkManager.IsSporkActive(Spork::SPORK_15_POS_DISABLED)) return true;
-//
-//      const int prevRatioLimit  = 4;
-//      const int prevBlockWindow = 7;
-//      int nTotalPoW = 0, nTotalPoS = 0;
-//
-//      for (int i = 0; i < prevBlockWindow; i++) {
-//          if (pindexPrev->IsProofOfWork()) {
-//             nTotalPoW++;
-//             LogPrintf("PoW ");
-//          } else {
-//             nTotalPoS++;
-//             LogPrintf("PoS ");
-//          }
-//          pindexPrev = pindexPrev->pprev;
-//      }
-//      LogPrintf("\n");
-//
-//      // see if we've got too many of either
-//      if (block.IsProofOfWork() && nTotalPoW == prevRatioLimit) {
-//          LogPrintf("Too many PoW blocks\n");
-//          return false;
-//      } else if (block.IsProofOfStake() && nTotalPoS == prevRatioLimit) {
-//          LogPrintf("Too many PoS blocks\n");
-//          return false;
-//      }
-//
-//      // if we're here, everything is great
-//      return true;
-//}
-
 /** NOTE: We need this function in order to place the commitment into the coinstake as last CTxOut.
  * The problem is that when we were building the witness commitment our coinstake was without extra output.
  * We will hack here in order to get correct hash without commitment.
@@ -3470,6 +3429,19 @@ static uint256 WitnessComittmentForPoSBlock(const CBlock &block, int commitpos, 
 static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
 {
     const int nHeight = pindexPrev == nullptr ? 0 : pindexPrev->nHeight + 1;
+
+    if (block.GetHash() == Params().GenesisBlock().GetHash())
+        return true;
+
+    if (!pindexPrev)
+        return state.DoS(100, false, REJECT_INVALID, "bad-pindex-prev", false, strprintf("current block is not genesis but has null previous"));
+
+    if (block.nBits != GetNextWorkRequired(pindexPrev, consensusParams, block.IsProofOfStake()))
+        return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, strprintf("incorrect difficulty: block pow=%d bits=%d calc=%d",
+                block.IsProofOfWork() ? "Y" : "N", block.nBits, GetNextWorkRequired(pindexPrev, consensusParams, block.IsProofOfStake())));
+    else
+        LogPrintf("Block pow=%s bits=%08x found=%08x\n", block.IsProofOfWork() ? "Y" : "N", GetNextWorkRequired(pindexPrev,
+                consensusParams, block.IsProofOfStake()), block.nBits);
 
     // Start enforcing BIP113 (Median Time Past) using versionbits logic.
     int nLockTimeFlags = 0;

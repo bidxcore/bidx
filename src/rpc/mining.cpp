@@ -212,11 +212,20 @@ static UniValue getmininginfo(const JSONRPCRequest& request)
 
     LOCK(cs_main);
 
+    CBlockIndex* tip = chainActive.Tip();
+    const Consensus::Params& consensusParams = Params().GetConsensus();
+
     UniValue obj(UniValue::VOBJ);
     obj.pushKV("blocks",           (int)chainActive.Height());
     obj.pushKV("currentblockweight", (uint64_t)nLastBlockWeight);
     obj.pushKV("currentblocktx",   (uint64_t)nLastBlockTx);
-    obj.pushKV("difficulty",       (double)GetDifficulty());
+
+    UniValue diff(UniValue::VOBJ);
+    diff.push_back(Pair("proof-of-work",(double)nround(GetDifficulty(GetNextWorkRequired(tip,consensusParams,false)),8)));
+    diff.push_back(Pair("proof-of-stake",(double)nround(GetDifficulty(GetNextWorkRequired(tip,consensusParams,true)),8)));
+    obj.push_back(Pair("difficulty", diff));
+    obj.pushKV("difficulty", diff);
+
     obj.pushKV("networkhashps",    getnetworkhashps(request));
     obj.pushKV("pooledtx",         (uint64_t)mempool.size());
     obj.pushKV("chain",            Params().NetworkIDString());

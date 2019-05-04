@@ -74,7 +74,7 @@ public:
     CMainParams() {
         strNetworkID = "main";
 
-        consensus.nFirstPoSBlock = 500;
+        consensus.nFirstPoSBlock = 100;
         consensus.nInstantSendKeepLock = 24;
         consensus.nBudgetPaymentsStartBlock = 0;
         consensus.nBudgetPaymentsCycleBlocks = 16616;
@@ -94,7 +94,7 @@ public:
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nMasternodeMinimumConfirmations = 15;
-        consensus.nStakeMinAge = 60 * 60;
+        consensus.nStakeMinAge = 10 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 30;
         consensus.nModifierInterval = 60 * 20;
         consensus.nCoinbaseMaturity = 20;
@@ -137,8 +137,8 @@ public:
         nMaxReorganizationDepth = 100;
 
 	////////////////////////////////////////////////////////////////////////////////
-	uint32_t nTime = 1556804000;
-	uint32_t nNonce = 42717;
+	uint32_t nTime = 1556915433;
+	uint32_t nNonce = 34897;
 
         if (nNonce == 0) {
 	  while (UintToArith256(genesis.GetPoWHash()) > UintToArith256(consensus.powLimit)) {
