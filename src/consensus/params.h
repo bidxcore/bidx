@@ -83,6 +83,8 @@ struct Params {
     bool fPowNoRetargeting;
     int64_t nPowTargetSpacing;
     int64_t nPowTargetTimespan;
+    /** Proof of stake parameters */
+    uint256 posLimit;
     int64_t nPosTargetSpacing;
     int64_t nPosTargetTimespan;
     int nFirstPoSBlock;

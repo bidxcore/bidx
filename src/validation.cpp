@@ -1847,11 +1847,6 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         return true;
     }
 
-//  if (pindex->nHeight > Params().GetConsensus().nFirstPoSBlock && block.IsProofOfWork()) {
-//      return state.DoS(100, error("ConnectBlock() : PoW period ended"),
-//                       REJECT_INVALID, "PoW-ended");
-//  }
-
     nBlocksTotal++;
 
     bool fScriptChecks = true;
@@ -3408,17 +3403,7 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationSta
  */
 static uint256 WitnessComittmentForPoSBlock(const CBlock &block, int commitpos, bool &malleated)
 {   
-//    if(!block.IsProofOfStake())
-        return BlockWitnessMerkleRoot(block, &malleated);
-
-//    CBlock tmpBlock = block;
-//    CMutableTransaction tempTx(*tmpBlock.vtx[1]);
-
-//    auto &vout = tempTx.vout;
-//    vout.erase(std::begin(vout) + commitpos);
-//    tmpBlock.vtx[1] = MakeTransactionRef(std::move(tempTx));
-//    auto value = BlockWitnessMerkleRoot(tmpBlock, &malleated);
-//    return value;
+      return BlockWitnessMerkleRoot(block, &malleated);
 }
 
 /** NOTE: This function is not currently invoked by ConnectBlock(), so we
@@ -3438,12 +3423,12 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
         return state.DoS(100, false, REJECT_INVALID, "bad-pindex-prev", false, strprintf("current block is not genesis but has null previous"));
 
     if (block.nBits != GetNextWorkRequired(pindexPrev, consensusParams, block.IsProofOfStake()))
-        return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, strprintf("incorrect difficulty: block pow=%d bits=%d calc=%d",
+        return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, strprintf("incorrect difficulty: block pow=%d bits=%08x calc=%08x",
                   block.IsProofOfWork() ? "Y" : "N", block.nBits, GetNextWorkRequired(pindexPrev, consensusParams, block.IsProofOfStake())));
     else
         LogPrintf("Block pow=%s bits=%08x found=%08x %s=%s\n", block.IsProofOfWork() ? "Y" : "N", GetNextWorkRequired(pindexPrev,
                   consensusParams, block.IsProofOfStake()), block.nBits, block.IsProofOfWork() ? "powhash" : "hashproof",
-                  block.IsProofOfWork() ? block.GetPoWHash().ToString().c_str() : pindexPrev->hashProofOfStake.ToString().c_str());
+                  block.IsProofOfWork() ? block.GetPoWHash().ToString().c_str() : block.GetHash().ToString().c_str());
 
     // Start enforcing BIP113 (Median Time Past) using versionbits logic.
     int nLockTimeFlags = 0;
@@ -3511,10 +3496,6 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
         if (!block.vtx[0]->vout[0].IsEmpty())
             return state.DoS(100, error("CheckBlock() : coinbase output not empty for proof-of-stake block"));
     }
-
-//  if (pindexPrev->nHeight >= Params().GetConsensus().nFirstPoSBlock && !CheckBlockRatio(block, pindexPrev)) {
-//      return state.DoS(100, false, REJECT_INVALID, "upset-ratio", false, strprintf("too many pow/pos blocks in recent window"));
-//  }
 
     // No witness data is allowed in blocks that don't commit to witness data, as this would otherwise leave room for spam
     if (!fHaveWitness) {

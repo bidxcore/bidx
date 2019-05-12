@@ -89,6 +89,7 @@ public:
         consensus.BIP65Height = consensus.nFirstPoSBlock;
         consensus.BIP66Height = consensus.nFirstPoSBlock;
         consensus.powLimit = uint256S("0000ffff00000000000000000000000000000000000000000000000000000000");
+        consensus.posLimit = uint256S("007ffff000000000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 2 * 60;
         consensus.nPowTargetSpacing = 40;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;

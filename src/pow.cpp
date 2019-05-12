@@ -120,8 +120,7 @@ unsigned int DualKGW3(const CBlockIndex* pindexLast, const Consensus::Params& pa
 unsigned int PoSWorkRequired(const CBlockIndex* pindexLast, const Consensus::Params& params)
 {
     const CBlockIndex* LastPoSBlock = GetLastBlockIndex(pindexLast, true);
-
-    arith_uint256 bnTargetLimit = (~arith_uint256(0) >> 24);
+    const arith_uint256 bnPosLimit = UintToArith256(params.posLimit);
     int64_t nTargetSpacing = Params().GetConsensus().nPosTargetSpacing;
     int64_t nTargetTimespan = Params().GetConsensus().nPosTargetTimespan;
 
@@ -141,8 +140,8 @@ unsigned int PoSWorkRequired(const CBlockIndex* pindexLast, const Consensus::Par
     bnNew *= ((nInterval - 1) * nTargetSpacing + nActualSpacing + nActualSpacing);
     bnNew /= ((nInterval + 1) * nTargetSpacing);
 
-    if (bnNew <= 0 || bnNew > bnTargetLimit)
-        bnNew = bnTargetLimit;
+    if (bnNew <= 0 || bnNew > bnPosLimit)
+        bnNew = bnPosLimit;
 
     return bnNew.GetCompact();
 }
