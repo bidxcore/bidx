@@ -356,7 +356,50 @@ crypto_libbitcoin_crypto_base_a_SOURCES = \
   crypto/sha256.cpp \
   crypto/sha256.h \
   crypto/sha512.cpp \
-  crypto/sha512.h
+  crypto/sha512.h \
+  crypto/groestl.c \
+  crypto/blake.c \
+  crypto/bmw.c \
+  crypto/cubehash.c \
+  crypto/echo.c \
+  crypto/jh.c \
+  crypto/keccak.c \
+  crypto/luffa.c \
+  crypto/shavite.c \
+  crypto/simd.c \
+  crypto/skein.c \
+  crypto/hamsi.c \
+  crypto/whirlpool.c \
+  crypto/shabal.c \
+  crypto/fugue.c \
+  crypto/sha2.c \
+  crypto/sph_sha2big.c \
+  crypto/haval.c \
+  crypto/tiger.cpp \
+  crypto/lyra2.cpp \
+  crypto/sponge.cpp \
+  crypto/sph_sha2.c \
+  crypto/gost_streebog.c \
+  crypto/SWIFFTX/SWIFFTX.c \
+  crypto/sph_groestl.h \
+  crypto/sph_types.h \
+  crypto/sph_blake.h \
+  crypto/sph_bmw.h \
+  crypto/sph_jh.h \
+  crypto/sph_keccak.h \
+  crypto/sph_skein.h \
+  crypto/sph_luffa.h \
+  crypto/sph_cubehash.h \
+  crypto/sph_simd.h \
+  crypto/sph_echo.h \
+  crypto/sph_shavite.h \
+  crypto/sph_sha2.h \
+  crypto/sph_haval.h \
+  crypto/sph_tiger.h \
+  crypto/lyra2.h \
+  crypto/sponge.h \
+  crypto/gost_streebog.h \
+  crypto/SWIFFTX/SWIFFTX.h
 
 if USE_ASM
 crypto_libbitcoin_crypto_base_a_SOURCES += crypto/sha256_sse4.cpp
