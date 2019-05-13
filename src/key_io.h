@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -26,7 +26,7 @@ CTxDestination DecodeDestination(const std::string& str);
 bool IsValidDestinationString(const std::string& str);
 bool IsValidDestinationString(const std::string& str, const CChainParams& params);
 
-class CBitcoinAddress {
+class CBIDXAddress {
 
 public:
     bool Set(const CKeyID &id);
@@ -35,10 +35,10 @@ public:
     bool IsValid() const;
     bool IsValid(const CChainParams &params) const;
 
-    CBitcoinAddress();
-    CBitcoinAddress(const CTxDestination &dest);
-    CBitcoinAddress(const std::string& strAddress);
-    CBitcoinAddress(const char* pszAddress);
+    CBIDXAddress();
+    CBIDXAddress(const CTxDestination &dest);
+    CBIDXAddress(const std::string& strAddress);
+    CBIDXAddress(const char* pszAddress);
 
     CTxDestination Get() const;
     bool GetKeyID(CKeyID &keyID) const;
@@ -46,9 +46,9 @@ public:
     bool IsScript() const;
     std::string ToString() const;
 
-    bool operator==(const CBitcoinAddress &rhs) const;
-    bool operator!=(const CBitcoinAddress &rhs) const;
-    bool operator<(const CBitcoinAddress &rhs) const;
+    bool operator==(const CBIDXAddress &rhs) const;
+    bool operator!=(const CBIDXAddress &rhs) const;
+    bool operator<(const CBIDXAddress &rhs) const;
 
 private:
     CTxDestination txDest;

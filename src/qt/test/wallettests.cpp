@@ -59,7 +59,7 @@ uint256 SendCoins(CWallet& wallet, SendCoinsDialog& sendCoinsDialog, const CTxDe
     QVBoxLayout* entries = sendCoinsDialog.findChild<QVBoxLayout*>("entries");
     SendCoinsEntry* entry = qobject_cast<SendCoinsEntry*>(entries->itemAt(0)->widget());
     entry->findChild<QValidatedLineEdit*>("payTo")->setText(QString::fromStdString(EncodeDestination(address)));
-    entry->findChild<BitcoinAmountField*>("payAmount")->setValue(amount);
+    entry->findChild<BIDXAmountField*>("payAmount")->setValue(amount);
     /*
     sendCoinsDialog.findChild<QFrame*>("frameFee")
         ->findChild<QFrame*>("frameFeeSelection")
@@ -188,7 +188,7 @@ void TestGUI()
     QString balanceText = balanceLabel->text();
     int unit = walletModel.getOptionsModel()->getDisplayUnit();
     CAmount balance = walletModel.wallet().getBalance();
-    QString balanceComparison = BitcoinUnits::formatWithUnit(unit, balance, false, BitcoinUnits::separatorAlways);
+    QString balanceComparison = BIDXUnits::formatWithUnit(unit, balance, false, BIDXUnits::separatorAlways);
     QCOMPARE(balanceText, balanceComparison);
 
     // Check Request Payment button
@@ -201,7 +201,7 @@ void TestGUI()
     labelInput->setText("TEST_LABEL_1");
 
     // Amount input
-    BitcoinAmountField* amountInput = receiveCoinsDialog.findChild<BitcoinAmountField*>("reqAmount");
+    BIDXAmountField* amountInput = receiveCoinsDialog.findChild<BIDXAmountField*>("reqAmount");
     amountInput->setValue(1);
 
     // Message input

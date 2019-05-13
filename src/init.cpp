@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
+#include <config/bidx-config.h>
 #endif
 
 #include <init.h>
@@ -796,7 +796,7 @@ static void ThreadImport(std::vector<fs::path> vImportFiles)
 }
 
 /** Sanity checks
- *  Ensure that Bitcoin is running in a usable environment with all
+ *  Ensure that BIDX is running in a usable environment with all
  *  necessary library support.
  */
 static bool InitSanityCheck(void)
@@ -1267,7 +1267,7 @@ bool AppInitParameterInteraction()
 
 static bool LockDataDirectory(bool probeOnly)
 {
-    // Make sure only a single Bitcoin process is using the data directory.
+    // Make sure only a single BIDX process is using the data directory.
     fs::path datadir = GetDataDir();
     if (!DirIsWritable(datadir)) {
         return InitError(strprintf(_("Cannot write to data directory '%s'; check permissions."), datadir.string()));
@@ -1883,7 +1883,7 @@ bool AppInitMain()
     // ********************************************************* Step 11b: Load cache data
     LoadExtensionsDataCaches();
 
-    // ********************************************************* Step 11c: update block tip in Bitcoin modules
+    // ********************************************************* Step 11c: update block tip in BIDX modules
 
     // force UpdatedBlockTip to initialize nCachedBlockHeight for DS, MN payments and budgets
     // but don't call it directly to prevent triggering of other listeners like zmq etc.

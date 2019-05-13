@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The BIDX developers
 // Copyright (c) 2014-2017 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -33,7 +33,7 @@ class QMenu;
 class QItemSelection;
 QT_END_NAMESPACE
 
-/** Local Bitcoin RPC console. */
+/** Local BIDX RPC console. */
 class RPCConsole: public QWidget
 {
     Q_OBJECT

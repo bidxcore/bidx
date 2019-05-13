@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -51,7 +51,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
                         if (mine) {
                             sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
                             sub.type = TransactionRecord::MNReward;
-                            sub.address = CBitcoinAddress(outAddress).ToString();
+                            sub.address = CBIDXAddress(outAddress).ToString();
                             sub.credit = wtx.tx->vout[i].nValue;
                         }
                     }
@@ -63,7 +63,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
             //stake reward
             isminetype mine = wtx.txout_is_mine[1];
             sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
-            sub.address = CBitcoinAddress(address).ToString();
+            sub.address = CBIDXAddress(address).ToString();
             sub.credit = nCredit - nDebit;
             sub.type = TransactionRecord::StakeMint;
 
@@ -88,7 +88,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
                 sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
                 if (wtx.txout_address_is_mine[i])
                 {
-                    // Received by Bitcoin Address
+                    // Received by BIDX Address
                     sub.type = TransactionRecord::RecvWithAddress;
                     sub.address = EncodeDestination(wtx.txout_address[i]);
                 }
@@ -157,7 +157,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
 
                 if (!boost::get<CNoDestination>(&wtx.txout_address[nOut]))
                 {
-                    // Sent to Bitcoin Address
+                    // Sent to BIDX Address
                     sub.type = TransactionRecord::SendToAddress;
                     sub.address = EncodeDestination(wtx.txout_address[nOut]);
                 }

@@ -477,7 +477,7 @@ void GovernanceList::ShowGovernanceObject(uint256 gobjectSingle) {
     strHTML += "<b>" + tr("Raw Information (String)") +     ": </b>" + GUIUtil::HtmlEscape(dataString) + "<br>";
     //strHTML += "<b>" + tr("Sentinel") +     ": </b>" + (mn.lastPing.nSentinelVersion > DEFAULT_SENTINEL_VERSION ? GUIUtil::HtmlEscape(SafeIntVersionToString(mn.lastPing.nSentinelVersion)) : tr("Unknown")) + "<br>";
     //strHTML += "<b>" + tr("Status") +       ": </b>" + GUIUtil::HtmlEscape(CMasternode::StateToString(mn.nActiveState)) + "<br>";
-    //strHTML += "<b>" + tr("Payee") +        ": </b>" + GUIUtil::HtmlEscape(CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString()) + "<br>";
+    //strHTML += "<b>" + tr("Payee") +        ": </b>" + GUIUtil::HtmlEscape(CBIDXAddress(mn.pubKeyCollateralAddress.GetID()).ToString()) + "<br>";
     //strHTML += "<b>" + tr("Active") +       ": </b>" + GUIUtil::HtmlEscape(DurationToDHMS(mn.lastPing.sigTime - mn.sigTime)) + "<br>";
     //strHTML += "<b>" + tr("Last Seen") +    ": </b>" + GUIUtil::HtmlEscape(DateTimeStrFormat("%Y-%m-%d %H:%M", mn.lastPing.sigTime + GetOffsetFromUtc())) + "<br>";
 

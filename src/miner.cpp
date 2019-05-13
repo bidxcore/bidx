@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -236,7 +236,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(CWallet *wallet, 
 
 		CTxDestination address1;
 		ExtractDestination(payee, address1);
-		CBitcoinAddress address2(address1);
+		CBIDXAddress address2(address1);
 		LogPrintf("CreateNewBlock::FillBlockPayee -- Masternode payment %lld to %s\n",
 			  masternodePayment, EncodeDestination(address1));
          }
@@ -568,7 +568,7 @@ static bool ProcessBlockFound(const std::shared_ptr<const CBlock> &pblock, const
     return true;
 }
 
-void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWallet* pwallet, bool fProofOfStake)
+void static BIDXMiner(const CChainParams& chainparams, CConnman& connman, CWallet* pwallet, bool fProofOfStake)
 {
     LogPrintf("bitcoinminer -- started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
@@ -628,7 +628,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWa
             auto pblock = std::make_shared<CBlock>(pblocktemplate->block);
             IncrementExtraNonce(pblock.get(), pindexPrev, nExtraNonce);
 
-            LogPrintf("BitcoinMiner -- Running miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
+            LogPrintf("BIDXMiner -- Running miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                       ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
             //Sign block
@@ -637,7 +637,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWa
                 LogPrintf("CPUMiner : proof-of-stake block found %s \n", pblock->GetHash().ToString().c_str());
 
                 if (!SignBlock(*pblock, *pwallet)) {
-                    LogPrintf("BitcoinMiner(): Signing new block failed \n");
+                    LogPrintf("BIDXMiner(): Signing new block failed \n");
                     throw std::runtime_error(strprintf("%s: SignBlock failed", __func__));
                 }
 
@@ -707,7 +707,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWa
         }
         catch (const boost::thread_interrupted&)
         {
-            LogPrintf("BitcoinMiner -- terminated\n");
+            LogPrintf("BIDXMiner -- terminated\n");
             throw;
         }
         catch (const std::runtime_error &e)
@@ -718,7 +718,7 @@ void static BitcoinMiner(const CChainParams& chainparams, CConnman& connman, CWa
     }
 }
 
-void GenerateBitcoins(bool fGenerate,
+void GenerateBIDXs(bool fGenerate,
                   int nThreads,
                   const CChainParams& chainparams,
                   CConnman &connman)
@@ -740,7 +740,7 @@ void GenerateBitcoins(bool fGenerate,
 
     minerThreads = new boost::thread_group();
     for (int i = 0; i < nThreads; i++)
-        minerThreads->create_thread(boost::bind(&BitcoinMiner, boost::cref(chainparams), boost::ref(connman), GetWallets().front(), false));
+        minerThreads->create_thread(boost::bind(&BIDXMiner, boost::cref(chainparams), boost::ref(connman), GetWallets().front(), false));
 }
 
 void ThreadStakeMinter(const CChainParams &chainparams, CConnman &connman, CWallet *pwallet)
@@ -748,7 +748,7 @@ void ThreadStakeMinter(const CChainParams &chainparams, CConnman &connman, CWall
     boost::this_thread::interruption_point();
     LogPrintf("ThreadStakeMinter started\n");
     try {
-        BitcoinMiner(chainparams, connman, pwallet, true);
+        BIDXMiner(chainparams, connman, pwallet, true);
         boost::this_thread::interruption_point();
     } catch (std::exception& e) {
         LogPrintf("ThreadStakeMinter() exception %s\n", e.what());

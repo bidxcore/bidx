@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
+#include <config/bidx-config.h>
 #endif
 
 #include <fs.h>
@@ -128,7 +128,7 @@ Intro::Intro(QWidget *parent) :
         .arg(tr(PACKAGE_NAME))
         .arg(BLOCK_CHAIN_SIZE)
         .arg(2009)
-        .arg(tr("Bitcoin"))
+        .arg(tr("BIDX"))
     );
     ui->lblExplanation2->setText(ui->lblExplanation2->text().arg(tr(PACKAGE_NAME)));
 
@@ -147,7 +147,7 @@ Intro::Intro(QWidget *parent) :
     }
     requiredSpace += CHAIN_STATE_SIZE;
     ui->sizeWarningLabel->setText(
-        tr("%1 will download and store a copy of the Bitcoin block chain.").arg(tr(PACKAGE_NAME)) + " " +
+        tr("%1 will download and store a copy of the BIDX block chain.").arg(tr(PACKAGE_NAME)) + " " +
         storageRequiresMsg.arg(requiredSpace) + " " +
         tr("The wallet will also be stored in this directory.")
     );

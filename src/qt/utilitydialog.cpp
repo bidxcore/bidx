@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
+#include <config/bidx-config.h>
 #endif
 
 #include <qt/utilitydialog.h>
@@ -157,7 +157,7 @@ ShutdownWindow::ShutdownWindow(QWidget *parent, Qt::WindowFlags f):
     setLayout(layout);
 }
 
-QWidget *ShutdownWindow::showShutdownWindow(BitcoinGUI *window)
+QWidget *ShutdownWindow::showShutdownWindow(BIDXGUI *window)
 {
     if (!window)
         return nullptr;

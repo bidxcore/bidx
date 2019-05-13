@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The BIDX developers
 // Copyright (c) 2014-2017 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -12,7 +12,7 @@
 
 #include <QStackedWidget>
 
-class BitcoinGUI;
+class BIDXGUI;
 class ClientModel;
 class OverviewPage;
 class PlatformStyle;
@@ -42,7 +42,7 @@ public:
     explicit WalletView(const PlatformStyle *platformStyle, QWidget *parent);
     ~WalletView();
 
-    void setBitcoinGUI(BitcoinGUI *gui);
+    void setBIDXGUI(BIDXGUI *gui);
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.
     */

@@ -426,7 +426,7 @@ bool CMasternodeBroadcast::Create(const COutPoint& outpoint, const CService& ser
     if (fImporting || fReindex) return false;
 
     LogPrint(BCLog::MASTERNODE, "CMasternodeBroadcast::Create -- pubKeyCollateralAddressNew = %s, pubKeyMasternodeNew.GetID() = %s\n",
-             CBitcoinAddress(pubKeyCollateralAddressNew.GetID()).ToString(),
+             CBIDXAddress(pubKeyCollateralAddressNew.GetID()).ToString(),
              pubKeyMasternodeNew.GetID().ToString());
 
     auto Log = [&strErrorRet,&mnbRet](std::string sErr)->bool
@@ -597,7 +597,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
         }
 
         if (err == COLLATERAL_INVALID_AMOUNT) {
-            LogPrint(BCLog::MASTERNODE, "CMasternodeBroadcast::CheckOutpoint -- Masternode UTXO should have 1000 Bitcoin, masternode=%s\n", vin.prevout.ToString());
+            LogPrint(BCLog::MASTERNODE, "CMasternodeBroadcast::CheckOutpoint -- Masternode UTXO should have 1000 BIDX, masternode=%s\n", vin.prevout.ToString());
             return false;
         }
 
@@ -678,7 +678,7 @@ bool CMasternodeBroadcast::CheckSignature(int& nDos)
                     pubKeyCollateralAddress.GetID().ToString() + pubKeyMasternode.GetID().ToString() +
                     boost::lexical_cast<std::string>(nProtocolVersion);
 
-    LogPrint(BCLog::MASTERNODE, "CMasternodeBroadcast::CheckSignature -- strMessage: %s  pubKeyCollateralAddress address: %s  sig: %s\n", strMessage, CBitcoinAddress(pubKeyCollateralAddress.GetID()).ToString(), EncodeBase64(&vchSig[0], vchSig.size()));
+    LogPrint(BCLog::MASTERNODE, "CMasternodeBroadcast::CheckSignature -- strMessage: %s  pubKeyCollateralAddress address: %s  sig: %s\n", strMessage, CBIDXAddress(pubKeyCollateralAddress.GetID()).ToString(), EncodeBase64(&vchSig[0], vchSig.size()));
 
     if(!CMessageSigner::VerifyMessage(pubKeyCollateralAddress.GetID(), vchSig, strMessage, strError)){
         LogPrintf("CMasternodeBroadcast::CheckSignature -- Got bad Masternode announce signature, error: %s\n", strError);

@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -232,7 +232,7 @@ static UniValue getmininginfo(const JSONRPCRequest& request)
 }
 
 
-// NOTE: Unlike wallet RPC (which use Bitcoin values), mining RPCs follow GBT (BIP 22) in using satoshi amounts
+// NOTE: Unlike wallet RPC (which use BIDX values), mining RPCs follow GBT (BIP 22) in using satoshi amounts
 static UniValue prioritisetransaction(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 3)
@@ -446,10 +446,10 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
 
     if (g_connman->GetNodeCount(CConnman::CONNECTIONS_ALL) == 0)
-        throw JSONRPCError(RPC_CLIENT_NOT_CONNECTED, "Bitcoin is not connected!");
+        throw JSONRPCError(RPC_CLIENT_NOT_CONNECTED, "BIDX is not connected!");
 
     if (IsInitialBlockDownload())
-        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Bitcoin is downloading blocks...");
+        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "BIDX is downloading blocks...");
 
     static unsigned int nTransactionsUpdatedLast;
 
@@ -684,7 +684,7 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
     if(pblock->txoutMasternode != CTxOut()) {
         CTxDestination address1;
         ExtractDestination(pblock->txoutMasternode.scriptPubKey, address1);
-        CBitcoinAddress address2(address1);
+        CBIDXAddress address2(address1);
         masternodeObj.push_back(Pair("payee", address2.ToString().c_str()));
         masternodeObj.push_back(Pair("script", HexStr(pblock->txoutMasternode.scriptPubKey)));
         masternodeObj.push_back(Pair("amount", pblock->txoutMasternode.nValue));
@@ -699,7 +699,7 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
             UniValue entry(UniValue::VOBJ);
             CTxDestination address1;
             ExtractDestination(txout.scriptPubKey, address1);
-            CBitcoinAddress address2(address1);
+            CBIDXAddress address2(address1);
             entry.push_back(Pair("payee", address2.ToString().c_str()));
             entry.push_back(Pair("script", HexStr(txout.scriptPubKey)));
             entry.push_back(Pair("amount", txout.nValue));
@@ -1014,7 +1014,7 @@ static UniValue setgenerate(const JSONRPCRequest& request)
             fGenerate = false;
     }
 
-    GenerateBitcoins(fGenerate, nGenProcLimit, Params(), *g_connman);
+    GenerateBIDXs(fGenerate, nGenProcLimit, Params(), *g_connman);
 
     return fGenerate ? std::string("Mining started") : std::string("Mining stopped");
 }

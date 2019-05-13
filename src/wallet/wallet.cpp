@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -4809,7 +4809,7 @@ bool CWallet::GetOutpointAndKeysFromOutput(const COutput& out, COutPoint& outpoi
 
     CTxDestination address1;
     ExtractDestination(pubScript, address1);
-    CBitcoinAddress address2(address1);
+    CBIDXAddress address2(address1);
 
     CKeyID keyID;
     if (!address2.GetKeyID(keyID)) {

@@ -1,10 +1,10 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The BIDX developers
 // Copyright (c) 2014-2017 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/bitcoin-config.h>
+#include <config/bidx-config.h>
 #endif
 
 #include <qt/rpcconsole.h>
@@ -1066,7 +1066,7 @@ void RPCConsole::buildParameterlist(QString arg)
     // Append repair parameter to command line.
     args.append(arg);
 
-    // Send command-line arguments to BitcoinGUI::handleRestart()
+    // Send command-line arguments to BIDXGUI::handleRestart()
     Q_EMIT handleRestart(args);
 }
 

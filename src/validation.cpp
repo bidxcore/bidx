@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -53,7 +53,7 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-# error "Bitcoin cannot be compiled without assertions."
+# error "BIDX cannot be compiled without assertions."
 #endif
 
 #define MICRO 0.000001
@@ -968,7 +968,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         // Remove conflicting transactions from the mempool
         for (const CTxMemPool::txiter it : allConflicting)
         {
-            LogPrint(BCLog::MEMPOOL, "replacing tx %s with %s for %s Bitcoin additional fees, %d delta bytes\n",
+            LogPrint(BCLog::MEMPOOL, "replacing tx %s with %s for %s BIDX additional fees, %d delta bytes\n",
                      it->GetTx().GetHash().ToString(),
                      hash.ToString(),
                      FormatMoney(nModifiedFees - nConflictingFees),
@@ -2081,7 +2081,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     int64_t nTime3 = GetTimeMicros(); nTimeConnect += nTime3 - nTime2;
     LogPrint(BCLog::BENCH, "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs (%.2fms/blk)]\n", (unsigned)block.vtx.size(), MILLI * (nTime3 - nTime2), MILLI * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : MILLI * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * MICRO, nTimeConnect * MILLI / nBlocksTotal);
 
-    // Bitcoin : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
+    // BIDX : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
 
     // It's possible that we simply don't have enough data and this could fail
     // (i.e. block itself could be a correct one and we need to store it),
@@ -2094,18 +2094,18 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     std::string strError = "";
     if (!IsBlockValueValid(block, pindex->nHeight, expectedReward, pindex->nMint, strError)) {
-        return state.DoS(0, error("ConnectBlock(Bitcoin): %s", strError), REJECT_INVALID, "bad-cb-amount");
+        return state.DoS(0, error("ConnectBlock(BIDX): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 
     bool isProofOfStake = !block.IsProofOfWork();
     const auto& coinbaseTransaction = block.vtx[isProofOfStake];
 
     if (!IsBlockPayeeValid(coinbaseTransaction, pindex->nHeight, expectedReward, pindex->nMint)) {
-        return state.DoS(0, error("ConnectBlock(Bitcoin): couldn't find masternode or superblock payments"),
+        return state.DoS(0, error("ConnectBlock(BIDX): couldn't find masternode or superblock payments"),
                          REJECT_INVALID, "bad-cb-payee");
     }
 
-    // END Bitcoin
+    // END BIDX
 
     if (!control.Wait())
         return state.DoS(100, error("%s: CheckQueue failed", __func__), REJECT_INVALID, "block-validation-failed");
