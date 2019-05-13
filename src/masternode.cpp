@@ -126,16 +126,13 @@ CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outp
         return COLLATERAL_UTXO_NOT_FOUND;
     }
 
-    bool fCollateralAmountValid = false;
-    for(int i=0; i<Params().CollateralLevels(); i++) {
-        if(coin.out.nValue == (Params().ValidCollateralAmounts()[i] * COIN)) {
-           fCollateralAmountValid = true;
-           break;
-        }
-    }
+    // collateral must be 7000 (below block 200000) or 10000 afterwards
+    int64_t nCollateralAmount = (chainActive.Height() >= 20000) ? 10000 * COIN : 7000 * COIN;
+    LogPrintf("* Height %d expects Collateral %llu\n", chainActive.Height(), nCollateralAmount / COIN);
 
-    if(!fCollateralAmountValid)
+    if(coin.out.nValue != nCollateralAmount) {
         return COLLATERAL_INVALID_AMOUNT;
+    }
 
     nHeightRet = coin.nHeight;
     return COLLATERAL_OK;
@@ -277,17 +274,18 @@ bool CMasternode::IsValidForPayment() const
 
 bool CMasternode::IsInputAssociatedWithPubkey() const
 {
+    // collateral must be 7000 (below block 200000) or 10000 afterwards
+    int64_t nCollateralAmount = (chainActive.Height() >= 20000) ? 10000 * COIN : 7000 * COIN;
+    LogPrintf("* Height %d expects Collateral %llu\n", chainActive.Height(), nCollateralAmount / COIN);
+
     CScript payee;
     payee = GetScriptForDestination(pubKeyCollateralAddress.GetID());
     CTransactionRef tx;
     uint256 hash;
     if(GetTransaction(vin.prevout.hash, tx, Params().GetConsensus(), hash, true)) {
         for(const CTxOut &out : tx->vout) {
-            for(int i=0; i<Params().CollateralLevels(); i++) {
-                if(out.nValue == (Params().ValidCollateralAmounts()[i] * COIN) && out.scriptPubKey == payee) {
-                   return true;
-                }
-            }
+            if(out.nValue == nCollateralAmount && out.scriptPubKey == payee)
+               return true;
         }
     }
     return false;

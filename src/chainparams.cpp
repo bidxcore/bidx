@@ -129,35 +129,21 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0xc4;
-        pchMessageStart[1] = 0x4d;
-        pchMessageStart[2] = 0xe4;
-        pchMessageStart[3] = 0x4f;
-        nDefaultPort = 20000;
+        pchMessageStart[0] = 0xa4;
+        pchMessageStart[1] = 0x4e;
+        pchMessageStart[2] = 0xf4;
+        pchMessageStart[3] = 0xbf;
+        nDefaultPort = 40000;
         nPruneAfterHeight = 100000;
         nMaxReorganizationDepth = 100;
 
-	////////////////////////////////////////////////////////////////////////////////
-	uint32_t nTime = 1556915433;
-	uint32_t nNonce = 34897;
-
-        if (nNonce == 0) {
-	  while (UintToArith256(genesis.GetPoWHash()) > UintToArith256(consensus.powLimit)) {
-	    nNonce++;
-	    genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 0 * COIN);
-	    if (nNonce % 128 == 0)
-	      printf("\rnonce %08x", nNonce);
-	  }
-        }
-	////////////////////////////////////////////////////////////////////////////////
-
-        genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1557675240, 45240, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        // assert(consensus.hashGenesisBlock == uint256S(""));
+        assert(consensus.hashGenesisBlock == uint256S("97e531fd9ee8b11dd760c35846202f35f08c95f28be9dc22395685042ac29952"));
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,70);
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,132);
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,198);
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,75);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,137);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,203);
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
         bech32_hrp = "vx";
@@ -175,15 +161,11 @@ public:
 
         checkpointData = {
             {
-                { 0, uint256S("") },
+                { 0, uint256S("97e531fd9ee8b11dd760c35846202f35f08c95f28be9dc22395685042ac29952") },
             }
         };
 
-        chainTxData = ChainTxData{
-            0,
-            1,
-            1.0
-        };
+        chainTxData = ChainTxData{ 1557675240, 1, 1.0 };
 
         /* disable fallback fee on mainnet */
         m_fallback_fee_enabled = true;
