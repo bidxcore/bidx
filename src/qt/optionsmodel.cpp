@@ -9,7 +9,7 @@
 
 #include <qt/optionsmodel.h>
 
-#include <qt/bitcoinunits.h>
+#include <qt/bidxunits.h>
 #include <qt/guiutil.h>
 
 #include <interfaces/node.h>

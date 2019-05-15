@@ -7,7 +7,7 @@
 #include <config/bidx-config.h>
 #endif
 
-#include <qt/bitcoingui.h>
+#include <qt/bidxgui.h>
 
 #include <chainparams.h>
 #include <qt/clientmodel.h>
@@ -85,7 +85,7 @@ static void InitMessage(const std::string &message)
  */
 static std::string Translate(const char* psz)
 {
-    return QCoreApplication::translate("bitcoin-core", psz).toStdString();
+    return QCoreApplication::translate("bidx-core", psz).toStdString();
 }
 
 static QString GetLangTerritory()
@@ -245,7 +245,7 @@ private:
     void startThread();
 };
 
-#include <qt/bitcoin.moc>
+#include <qt/bidx.moc>
 
 BIDXCore::BIDXCore(interfaces::Node& node) :
     QObject(), m_node(node)
@@ -566,8 +566,8 @@ int main(int argc, char *argv[])
     // Do not refer to data directory yet, this can be overridden by Intro::pickDataDirectory
 
     /// 1. Basic Qt initialization (not dependent on parameters or configuration)
-    Q_INIT_RESOURCE(bitcoin);
-    Q_INIT_RESOURCE(bitcoin_locale);
+    Q_INIT_RESOURCE(bidx);
+    Q_INIT_RESOURCE(bidx_locale);
 
     BIDXApplication app(*node, argc, argv);
 #if QT_VERSION > 0x050100

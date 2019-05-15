@@ -12,7 +12,7 @@
 #include <governance/governance-vote.h>
 #include <governance/governance-classes.h>
 #include <governance/governance-validators.h>
-#include <bitcoinunits.h>
+#include <bidxunits.h>
 #include <guiconstants.h>
 #include <guiutil.h>
 #include <messagesigner.h>
