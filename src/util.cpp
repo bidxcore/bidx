@@ -82,8 +82,8 @@
 // Application startup time (used for uptime calculation)
 const int64_t nStartupTime = GetTime();
 
-const char * const BITCOIN_CONF_FILENAME = "bitcoin.conf";
-const char * const BITCOIN_PID_FILENAME = "bitcoind.pid";
+const char * const BITCOIN_CONF_FILENAME = "bidx.conf";
+const char * const BITCOIN_PID_FILENAME = "bidx.pid";
 
 //BIDX only features
 bool fMasterNode = false;
@@ -700,7 +700,7 @@ static std::string FormatException(const std::exception* pex, const char* pszThr
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(nullptr, pszModule, sizeof(pszModule));
 #else
-    const char* pszModule = "bitcoin";
+    const char* pszModule = "bidx";
 #endif
     if (pex)
         return strprintf(
@@ -738,7 +738,7 @@ fs::path GetDefaultDataDir()
     return pathRet / "Library/Application Support/BIDX";
 #else
     // Unix
-    return pathRet / ".bitcoin";
+    return pathRet / ".BIDX";
 #endif
 #endif
 }

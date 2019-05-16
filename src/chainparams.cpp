@@ -48,7 +48,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks";
+    const char* pszTimestamp = "BIDX2019";
     const CScript genesisOutputScript = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -74,7 +74,7 @@ public:
     CMainParams() {
         strNetworkID = "main";
 
-        consensus.nFirstPoSBlock = 100;
+        consensus.nFirstPoSBlock = 250;
         consensus.nInstantSendKeepLock = 24;
         consensus.nBudgetPaymentsStartBlock = 0;
         consensus.nBudgetPaymentsCycleBlocks = 16616;
@@ -95,7 +95,7 @@ public:
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nMasternodeMinimumConfirmations = 15;
-        consensus.nStakeMinAge = 10 * 60;
+        consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 30;
         consensus.nModifierInterval = 60 * 20;
         consensus.nCoinbaseMaturity = 20;
@@ -137,9 +137,11 @@ public:
         nPruneAfterHeight = 100000;
         nMaxReorganizationDepth = 100;
 
-        genesis = CreateGenesisBlock(1557675240, 45240, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1557964000, 53711, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("97e531fd9ee8b11dd760c35846202f35f08c95f28be9dc22395685042ac29952"));
+        assert(consensus.hashGenesisBlock == uint256S("f0f712ebc82ba072148ed52459405a9123942d101121adf4dfb01fe043212319"));
+
+        vSeeds.push_back("149.28.249.86");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,75);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,137);
