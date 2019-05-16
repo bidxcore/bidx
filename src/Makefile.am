@@ -372,7 +372,6 @@ crypto_libbidx_crypto_base_a_SOURCES = \
   crypto/whirlpool.c \
   crypto/shabal.c \
   crypto/fugue.c \
-  crypto/sha2.c \
   crypto/sph_sha2big.c \
   crypto/haval.c \
   crypto/tiger.cpp \
