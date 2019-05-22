@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -48,7 +48,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks";
+    const char* pszTimestamp = "BIDX2019";
     const CScript genesisOutputScript = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -74,7 +74,7 @@ public:
     CMainParams() {
         strNetworkID = "main";
 
-        consensus.nFirstPoSBlock = 100;
+        consensus.nFirstPoSBlock = 250;
         consensus.nInstantSendKeepLock = 24;
         consensus.nBudgetPaymentsStartBlock = 0;
         consensus.nBudgetPaymentsCycleBlocks = 16616;
@@ -89,12 +89,13 @@ public:
         consensus.BIP65Height = consensus.nFirstPoSBlock;
         consensus.BIP66Height = consensus.nFirstPoSBlock;
         consensus.powLimit = uint256S("0000ffff00000000000000000000000000000000000000000000000000000000");
+        consensus.posLimit = uint256S("007ffff000000000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 2 * 60;
         consensus.nPowTargetSpacing = 40;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nMasternodeMinimumConfirmations = 15;
-        consensus.nStakeMinAge = 10 * 60;
+        consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 30;
         consensus.nModifierInterval = 60 * 20;
         consensus.nCoinbaseMaturity = 20;
@@ -128,35 +129,23 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0xc4;
-        pchMessageStart[1] = 0x4d;
-        pchMessageStart[2] = 0xe4;
-        pchMessageStart[3] = 0x4f;
-        nDefaultPort = 20000;
+        pchMessageStart[0] = 0xa4;
+        pchMessageStart[1] = 0x4e;
+        pchMessageStart[2] = 0xf4;
+        pchMessageStart[3] = 0xbf;
+        nDefaultPort = 40000;
         nPruneAfterHeight = 100000;
         nMaxReorganizationDepth = 100;
 
-	////////////////////////////////////////////////////////////////////////////////
-	uint32_t nTime = 1556915433;
-	uint32_t nNonce = 34897;
-
-        if (nNonce == 0) {
-	  while (UintToArith256(genesis.GetPoWHash()) > UintToArith256(consensus.powLimit)) {
-	    nNonce++;
-	    genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 0 * COIN);
-	    if (nNonce % 128 == 0)
-	      printf("\rnonce %08x", nNonce);
-	  }
-        }
-	////////////////////////////////////////////////////////////////////////////////
-
-        genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1557964000, 53711, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        // assert(consensus.hashGenesisBlock == uint256S(""));
+        assert(consensus.hashGenesisBlock == uint256S("f0f712ebc82ba072148ed52459405a9123942d101121adf4dfb01fe043212319"));
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,70);
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,132);
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,198);
+        vSeeds.push_back("149.28.249.86");
+
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,75);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,137);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,203);
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
         bech32_hrp = "vx";
@@ -174,15 +163,11 @@ public:
 
         checkpointData = {
             {
-                { 0, uint256S("") },
+                { 0, uint256S("97e531fd9ee8b11dd760c35846202f35f08c95f28be9dc22395685042ac29952") },
             }
         };
 
-        chainTxData = ChainTxData{
-            0,
-            1,
-            1.0
-        };
+        chainTxData = ChainTxData{ 1557675240, 1, 1.0 };
 
         /* disable fallback fee on mainnet */
         m_fallback_fee_enabled = true;

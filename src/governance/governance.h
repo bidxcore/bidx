@@ -5,7 +5,7 @@
 #ifndef GOVERNANCE_H
 #define GOVERNANCE_H
 
-//#define ENABLE_Bitcoin_DEBUG
+//#define ENABLE_BIDX_DEBUG
 
 #include <bloom.h>
 #include <cachemap.h>

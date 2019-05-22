@@ -4,7 +4,7 @@
 #ifndef GOVERNANCE_CLASSES_H
 #define GOVERNANCE_CLASSES_H
 
-//#define ENABLE_Bitcoin_DEBUG
+//#define ENABLE_BIDX_DEBUG
 
 #include <key_io.h>
 #include <governance/governance.h>
@@ -98,7 +98,7 @@ public:
          nAmount(0)
     {}
 
-    CGovernancePayment(CBitcoinAddress addrIn, CAmount nAmountIn)
+    CGovernancePayment(CBIDXAddress addrIn, CAmount nAmountIn)
         :fValid(false),
          script(),
          nAmount(0)

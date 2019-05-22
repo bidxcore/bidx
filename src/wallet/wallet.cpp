@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -2348,6 +2348,10 @@ CAmount CWallet::GetAvailableBalance(const CCoinControl* coinControl) const
 
 static bool IsCorrectType(CAmount nAmount, AvailableCoinsType nCoinType)
 {
+    // collateral must be 7000 (below block 200000) or 10000 afterwards
+    int64_t nCollateralAmount = (chainActive.Height() >= 20000) ? 10000 * COIN : 7000 * COIN;
+    LogPrintf("* Height %d expects Collateral %llu\n", chainActive.Height(), nCollateralAmount / COIN);
+
     bool found = false;
     if(nCoinType == ONLY_DENOMINATED) {
 #if 0
@@ -2359,12 +2363,8 @@ static bool IsCorrectType(CAmount nAmount, AvailableCoinsType nCoinType)
             found = !CPrivateSend::IsDenominatedAmount(nAmount);
 #endif
     } else if(nCoinType == ONLY_MASTERNODE_COLLATERAL) {
-        for(int i=0; i<Params().CollateralLevels(); i++) {
-            if(nAmount == (Params().ValidCollateralAmounts()[i] * COIN)) {
-                found = true;
-                break;
-            }
-        }
+        if(nAmount == nCollateralAmount)
+            found = true;
     } else if(nCoinType == ONLY_PRIVATESEND_COLLATERAL) {
 #if 0
         found = CPrivateSend::IsCollateralAmount(nAmount);
@@ -4809,7 +4809,7 @@ bool CWallet::GetOutpointAndKeysFromOutput(const COutput& out, COutPoint& outpoi
 
     CTxDestination address1;
     ExtractDestination(pubScript, address1);
-    CBitcoinAddress address2(address1);
+    CBIDXAddress address2(address1);
 
     CKeyID keyID;
     if (!address2.GetKeyID(keyID)) {

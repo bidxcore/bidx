@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2013 The Bitcoin Core developers
+// Copyright (c) 2011-2013 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,7 +12,7 @@
 #include <governance/governance-vote.h>
 #include <governance/governance-classes.h>
 #include <governance/governance-validators.h>
-#include <bitcoinunits.h>
+#include <bidxunits.h>
 #include <guiconstants.h>
 #include <guiutil.h>
 #include <messagesigner.h>
@@ -31,7 +31,7 @@
 #endif
 
 #if defined(HAVE_CONFIG_H)
-#include "config/bitcoin-config.h" /* for USE_QRCODE */
+#include "config/bidx-config.h" /* for USE_QRCODE */
 #endif
 
 #ifdef USE_QRCODE

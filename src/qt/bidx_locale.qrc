@@ -1,0 +1,20 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource prefix="/translations">
+        <file alias="bg">locale/bidx_bg.qm</file>
+        <file alias="de">locale/bidx_de.qm</file>
+        <file alias="en">locale/bidx_en.qm</file>
+        <file alias="es">locale/bidx_es.qm</file>
+        <file alias="fi">locale/bidx_fi.qm</file>
+        <file alias="fr">locale/bidx_fr.qm</file>
+        <file alias="it">locale/bidx_it.qm</file>
+        <file alias="ja">locale/bidx_ja.qm</file>
+        <file alias="pl">locale/bidx_pl.qm</file>
+        <file alias="pt">locale/bidx_pt.qm</file>
+        <file alias="ru">locale/bidx_ru.qm</file>
+        <file alias="sk">locale/bidx_sk.qm</file>
+        <file alias="sv">locale/bidx_sv.qm</file>
+        <file alias="vi">locale/bidx_vi.qm</file>
+        <file alias="zh_CN">locale/bidx_zh_CN.qm</file>
+        <file alias="zh_TW">locale/bidx_zh_TW.qm</file>
+    </qresource>
+</RCC>

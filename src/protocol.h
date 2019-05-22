@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The BIDX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -61,7 +61,7 @@ public:
 };
 
 /**
- * Bitcoin protocol message types. When adding new message types, don't forget
+ * BIDX protocol message types. When adding new message types, don't forget
  * to update allNetMessageTypes in protocol.cpp.
  */
 namespace NetMsgType {
@@ -239,7 +239,7 @@ extern const char *GETBLOCKTXN;
  */
 extern const char *BLOCKTXN;
 
-/*! Bitcoin STUFF */
+/*! BIDX STUFF */
 extern const char *TXLOCKREQUEST;
 extern const char *TXLOCKVOTE;
 extern const char *SPORK;
@@ -277,14 +277,14 @@ enum ServiceFlags : uint64_t {
     // Nothing
     NODE_NONE = 0,
     // NODE_NETWORK means that the node is capable of serving the complete block chain. It is currently
-    // set by all Bitcoin non pruned nodes, and is unset by SPV clients or other light clients.
+    // set by all BIDX non pruned nodes, and is unset by SPV clients or other light clients.
     NODE_NETWORK = (1 << 0),
     // NODE_GETUTXO means the node is capable of responding to the getutxo protocol request.
-    // Bitcoin does not support this but a patch set called Bitcoin XT does.
+    // BIDX does not support this but a patch set called BIDX XT does.
     // See BIP 64 for details on how this is implemented.
     NODE_GETUTXO = (1 << 1),
     // NODE_BLOOM means the node is capable and willing to handle bloom-filtered connections.
-    // Bitcoin nodes used to support this by default, without advertising this bit,
+    // BIDX nodes used to support this by default, without advertising this bit,
     // but no longer do as of protocol version 70011 (= NO_BLOOM_VERSION)
     NODE_BLOOM = (1 << 2),
     // NODE_WITNESS indicates that a node can be asked for blocks and transactions including
@@ -390,7 +390,7 @@ public:
 /** getdata message type flags */
 const uint32_t MSG_WITNESS_FLAG = 1 << 30;
 const uint32_t MSG_TYPE_MASK    = 0xffffffff >> 2;
-const uint32_t MSG_Bitcoin_OFFSET = 1000;
+const uint32_t MSG_BIDX_OFFSET = 1000;
 
 /** getdata / inv message types.
  * These numbers are defined by the protocol. When adding a new value, be sure
@@ -404,7 +404,7 @@ enum GetDataMsg
     // The following can only occur in getdata. Invs always use TX or BLOCK.
     MSG_FILTERED_BLOCK = 3,  //!< Defined in BIP37
     MSG_CMPCT_BLOCK = 4,     //!< Defined in BIP152
-    MSG_TXLOCK_REQUEST = MSG_Bitcoin_OFFSET,
+    MSG_TXLOCK_REQUEST = MSG_BIDX_OFFSET,
     MSG_TXLOCK_VOTE,
     MSG_SPORK,
     MSG_MASTERNODE_PAYMENT_VOTE,
