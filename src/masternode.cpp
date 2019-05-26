@@ -128,7 +128,7 @@ CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outp
 
     // collateral must be 7000 (below block 200000) or 10000 afterwards
     int64_t nCollateralAmount = (chainActive.Height() >= 20000) ? 10000 * COIN : 7000 * COIN;
-    LogPrintf("* Height %d expects Collateral %llu\n", chainActive.Height(), nCollateralAmount / COIN);
+    //LogPrintf("* Height %d expects Collateral %llu\n", chainActive.Height(), nCollateralAmount / COIN);
 
     if(coin.out.nValue != nCollateralAmount) {
         return COLLATERAL_INVALID_AMOUNT;
@@ -276,7 +276,7 @@ bool CMasternode::IsInputAssociatedWithPubkey() const
 {
     // collateral must be 7000 (below block 200000) or 10000 afterwards
     int64_t nCollateralAmount = (chainActive.Height() >= 20000) ? 10000 * COIN : 7000 * COIN;
-    LogPrintf("* Height %d expects Collateral %llu\n", chainActive.Height(), nCollateralAmount / COIN);
+    //LogPrintf("* Height %d expects Collateral %llu\n", chainActive.Height(), nCollateralAmount / COIN);
 
     CScript payee;
     payee = GetScriptForDestination(pubKeyCollateralAddress.GetID());
