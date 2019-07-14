@@ -2349,7 +2349,7 @@ CAmount CWallet::GetAvailableBalance(const CCoinControl* coinControl) const
 static bool IsCorrectType(CAmount nAmount, AvailableCoinsType nCoinType)
 {
     // collateral must be 7000 (below block 200000) or 10000 afterwards
-    int64_t nCollateralAmount = (chainActive.Height() >= 20000) ? 10000 * COIN : 7000 * COIN;
+    int64_t nCollateralAmount = (chainActive.Height() >= 200000) ? 10000 * COIN : 7000 * COIN;
     LogPrintf("* Height %d expects Collateral %llu\n", chainActive.Height(), nCollateralAmount / COIN);
 
     bool found = false;
