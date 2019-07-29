@@ -13,6 +13,9 @@
 #include <init.h>
 #include <validation.h>
 #include <key_io.h>
+#include <masternode.h>
+#include <masternodeman.h>
+#include <masternode-payments.h>
 #include <miner.h>
 #include <net.h>
 #include <policy/fees.h>
@@ -681,15 +684,26 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     UniValue masternodeObj(UniValue::VOBJ);
-    if(pblock->txoutMasternode != CTxOut()) {
-        CTxDestination address1;
-        ExtractDestination(pblock->txoutMasternode.scriptPubKey, address1);
-        CBIDXAddress address2(address1);
-        masternodeObj.push_back(Pair("payee", address2.ToString().c_str()));
-        masternodeObj.push_back(Pair("script", HexStr(pblock->txoutMasternode.scriptPubKey)));
-        masternodeObj.push_back(Pair("amount", pblock->txoutMasternode.nValue));
+    CScript payee;
+    CAmount masternodePayment;
+    if (!mnpayments.GetBlockPayee(pindexPrev->nHeight + 1, payee)) {
+	int nCount = 0;
+	masternode_info_t mnInfo;
+	mnodeman.GetNextMasternodeInQueueForPayment(pindexPrev->nHeight + 1, true, nCount, mnInfo);
+	payee = GetScriptForDestination(mnInfo.pubKeyCollateralAddress.GetID());
+        if(payee == CScript())
+	   LogPrint(BCLog::MNPAYMENTS, "getblocktemplate: Failed to detect masternode to pay\n");
     }
+    masternodePayment = GetMasternodePayment(pindexPrev->nHeight + 1, pblock->vtx[0]->vout[0].nValue);
+
+    CTxDestination address1;
+    ExtractDestination(payee, address1);
+    CBIDXAddress address2(address1);
+    masternodeObj.push_back(Pair("payee", address2.ToString().c_str()));
+    masternodeObj.push_back(Pair("script", HexStr(payee)));
+    masternodeObj.push_back(Pair("amount", masternodePayment));
     result.push_back(Pair("masternode", masternodeObj));
+
     result.push_back(Pair("masternode_payments_started", pindexPrev->nHeight + 1 > consensusParams.nFirstPoSBlock));
     result.push_back(Pair("masternode_payments_enforced", sporkManager.IsSporkActive(Spork::SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT)));
 
