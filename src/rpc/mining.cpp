@@ -658,7 +658,7 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
     result.pushKV("previousblockhash", pblock->hashPrevBlock.GetHex());
     result.pushKV("transactions", transactions);
     result.pushKV("coinbaseaux", aux);
-    result.pushKV("coinbasevalue", (int64_t)pblock->vtx[0]->vout[0].nValue);
+    result.pushKV("coinbasevalue", (int64_t) GetBlockSubsidy(pindexPrev->nHeight + 1, Params().GetConsensus(), false));
     result.pushKV("longpollid", chainActive.Tip()->GetBlockHash().GetHex() + i64tostr(nTransactionsUpdatedLast));
     result.pushKV("target", hashTarget.GetHex());
     result.pushKV("mintime", (int64_t)pindexPrev->GetMedianTimePast()+1);
@@ -694,7 +694,7 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
         if(payee == CScript())
 	   LogPrint(BCLog::MNPAYMENTS, "getblocktemplate: Failed to detect masternode to pay\n");
     }
-    masternodePayment = GetMasternodePayment(pindexPrev->nHeight + 1, pblock->vtx[0]->vout[0].nValue);
+    masternodePayment = GetMasternodePayment(pindexPrev->nHeight + 1, GetBlockSubsidy(pindexPrev->nHeight + 1, Params().GetConsensus(), false));
 
     CTxDestination address1;
     ExtractDestination(payee, address1);
